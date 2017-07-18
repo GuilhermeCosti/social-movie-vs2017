@@ -1,0 +1,5 @@
+---
+applications:
+ - name: VS2017SocialMovieApacheHome
+   random-route: true
+   memory: 512M
