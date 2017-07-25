@@ -10,22 +10,43 @@ using Microsoft.Extensions.Logging;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.StaticFiles;
+using SocialMovie.Models;
+using Microsoft.Extensions.Configuration;
+using MySQL.Data.EntityFrameworkCore.Extensions;
 
 namespace SocialMovie
 {
     public class Startup
     {
+        private IHostingEnvironment _env;
+
+        public Startup(IHostingEnvironment env)
+        {
+            _env = env;
+
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(_env.ContentRootPath)
+                .AddJsonFile("config.json")
+                .AddEnvironmentVariables();
+            //var configuration = builder.Build();
+        }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDirectoryBrowser();
+            services.AddScoped<SocialMovieContext>();
+            services.AddDbContext<SocialMovieContext>(options =>
+            {
+                options.UseMySQL("server=localhost;userid=root;pwd=joaopio1234;port=3305;database=socialmovie;sslmode=none;");
+            });
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseDeveloperExceptionPage();
             app.UseDefaultFiles();
             app.UseStaticFiles(new StaticFileOptions() {
                 ServeUnknownFileTypes = true
