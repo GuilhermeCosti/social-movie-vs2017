@@ -15,7 +15,8 @@ namespace SocialMovie.Controllers
 
         public HomeController(SocialMovieContext context)
         {
-            _context = context; 
+            _context = context;
+            _context.Database.EnsureCreated();
         }
         // GET: /<controller>/
         public IActionResult Index()

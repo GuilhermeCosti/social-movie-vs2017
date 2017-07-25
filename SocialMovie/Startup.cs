@@ -38,7 +38,7 @@ namespace SocialMovie
             services.AddScoped<SocialMovieContext>();
             services.AddDbContext<SocialMovieContext>(options =>
             {
-                options.UseMySQL("server=localhost;userid=root;pwd=joaopio1234;port=3305;database=socialmovie;sslmode=none;");
+                options.UseMySQL("server=localhost;userid=root;pwd=joaopio1234;port=3306;database=socialmovie;sslmode=none;");
             });
             services.AddMvc();
         }
