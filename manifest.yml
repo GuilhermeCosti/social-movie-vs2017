@@ -1,5 +1,5 @@
 ---
 applications:
- - name: VS2017SocialMovieApacheHome
+ - name: VS2017SocialMovieNginxHome
    random-route: true
    memory: 512M

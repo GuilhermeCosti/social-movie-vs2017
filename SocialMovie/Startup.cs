@@ -36,12 +36,12 @@ namespace SocialMovie
             //    EnableDirectoryBrowsing = true,
             //});
 
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Movies")),
-                RequestPath = new PathString("/movies"),
-                ServeUnknownFileTypes = true
-            });
+            //app.UseStaticFiles(new StaticFileOptions()
+            //{
+            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Movies")),
+            //    RequestPath = new PathString("/movies"),
+            //    ServeUnknownFileTypes = true
+            //});
 
             //app.UseMvcWithDefaultRoute();
             app.UseMvc(routes =>

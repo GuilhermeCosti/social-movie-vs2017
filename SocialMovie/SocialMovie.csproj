@@ -11,8 +11,4 @@
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Movies\" />
-  </ItemGroup>
-
 </Project>
