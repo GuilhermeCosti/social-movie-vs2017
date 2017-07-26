@@ -10,7 +10,8 @@ namespace SocialMovie.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string MediaURL { get; set; }
+        public string File { get; set; }
+        public string Extension { get; set; }
         public string Description { get; set; }
-        public string ThumbnailURL { get; set; }
     }
 }

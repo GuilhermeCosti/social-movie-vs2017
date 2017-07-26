@@ -21,7 +21,8 @@ namespace SocialMovie.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            IEnumerable<Movie> data = _context.Movies.ToList();
+            return View(data);
         }
     }
 }

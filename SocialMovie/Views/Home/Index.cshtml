@@ -1,12 +1,21 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{
+@using SocialMovie.Models
+@using System.Collections.Generic
+@model IEnumerable<Movie>
+
+<h1>Adaptive Streaming with HTML5</h1>
+@{ 
+    foreach (var x in @Model)
+    {
+        <div>
+            <h3>@x.Name</h3>
+            <p>@x.</p>
+            <video id="video_@x.Id" onClick="setupVideo('http', 'socialmovie.sytes.net','4000','@x.MediaURL', '@x.File', '@x.Extension', '@x.Id')" controls></video>
+        </div>
+    }
 }
-<div>
-    <h1>Adaptive Streaming with HTML5</h1>
-    <video id="videoPlayer"  controls></video>
-</div>
 @*<div>
     <a href="WatchMovie">Outro filme</a>
 </div>*@
