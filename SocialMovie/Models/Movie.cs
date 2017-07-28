@@ -13,5 +13,6 @@ namespace SocialMovie.Models
         public string File { get; set; }
         public string Extension { get; set; }
         public string Description { get; set; }
+        //public DateTime CreatedUTC { get; set; }
     }
 }
