@@ -6,16 +6,28 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title>Adaptive Streaming in HTML5</title>
-    <script src="~/js/dash.all.min.js"></script>
-    <script src="~/js/site.js"></script><meta charset="utf-8">
-    <!-- Shaka Player compiled library: -->
-    <script src="js/shaka-player.compiled.js"></script>
-    <!-- Your application source: -->
-    <script src="js/shaka.js"></script>
+
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" >
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body align='center' >
     @RenderBody()
+
+    <!--
+    <script src="js/shaka-player.compiled.js"></script>
+    <script src="js/shaka.js"></script>
+    -->
+    <!-- Third-Party libraries -->
+    <script src="~/js/jquery-3.1.1.slim.min.js"> </script>
+    <script src="~/js/tether.min.js"> </script>
+    <script src="~/js/bootstrap.min.js"> </script>
+
+    <!-- Social Movie libraries -->
+    <script src="~/js/dash.all.min.js"></script>
+    <script src="~/js/site.js"></script>
 </body>
 </html>
