@@ -19,6 +19,7 @@ namespace SocialMovie
     public class Startup
     {
         private IHostingEnvironment _env;
+        private IConfigurationRoot Configuration;
 
         public Startup(IHostingEnvironment env)
         {
@@ -28,17 +29,28 @@ namespace SocialMovie
                 .SetBasePath(_env.ContentRootPath)
                 .AddJsonFile("config.json")
                 .AddEnvironmentVariables();
-            //var configuration = builder.Build();
+            Configuration = builder.Build();
         }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDirectoryBrowser();
             services.AddScoped<SocialMovieContext>();
+            string url = "";
+
+            if (_env.IsDevelopment())
+            {
+                services.AddDirectoryBrowser();
+                url = Configuration.GetValue<string>("localUrl");
+            } else
+            {
+
+                url = Configuration.GetValue<string>("releaseUrl");
+            }
+
             services.AddDbContext<SocialMovieContext>(options =>
             {
-                options.UseMySQL("server=localhost;userid=root;pwd=joaopio1234;port=3306;database=socialmovie;sslmode=none;");
+                options.UseMySQL($"server={url};userid=root;pwd=joaopio1234;port=3306;database=socialmovie;sslmode=none;");
             });
             services.AddMvc();
         }
