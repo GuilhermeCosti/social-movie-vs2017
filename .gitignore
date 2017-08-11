@@ -1,3 +1,5 @@
 SocialMovie/bin
 SocialMovie/obj
-.vs/
+SocialMovie/out
+.*
+!/.gitignore
