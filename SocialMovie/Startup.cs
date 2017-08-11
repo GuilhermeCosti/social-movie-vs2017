@@ -76,20 +76,19 @@ namespace SocialMovie
             //    ServeUnknownFileTypes = true
             //});
 
-            //app.UseMvcWithDefaultRoute();
-            app.UseMvc(routes =>
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                AuthenticationScheme = "MyCookieMiddlewareInstance",
+                LoginPath = new PathString("/Account/Unauthorized/"),
+                AccessDeniedPath = new PathString("/Account/Forbidden/"),
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true
             });
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "movies",
-                    template: "{controller=WatchMovie}/{id?}");
-            });
+            app.UseMvcWithDefaultRoute();
+
+
         }
     }
 }
