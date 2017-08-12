@@ -42,7 +42,8 @@ namespace SocialMovie.Controllers
         public IActionResult CheckSalt()
         {
             string salt = HttpContext.Request.Form["salt"].ToString();
-            string hash = HttpContext.Request.Form["__RequestVerificationToken"].ToString();
+            string hash = HttpContext.Request.Form["hash"].ToString();
+            string hash512 = HttpContext.Request.Form["hash512"].ToString();
             return View();
         }
     }

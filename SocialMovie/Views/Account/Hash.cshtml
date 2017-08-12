@@ -5,10 +5,11 @@
 }
 <p onclick='argon("password", "salteado" );'>Click here</p>
 
-<input type="text" name="password" />
-<form id="saltForm" asp-action="CheckSalt" asp-controller="Account" method="post" onsubmit="return argon()">
+<form name="saltForm" asp-action="CheckSalt" asp-controller="Account" method="post" onsubmit="return argon()">
+    <input type="text" id="password" name="password" />
     <input type="hidden" name="salt" value="@ViewBag.Salt" />
-    <input type="hidden" name="hash"  />
+    <input type="hidden" name="hashed" value="" />
+    <input type="hidden" name="hash512" value="" />
     <input type="submit" name="submit" value="Submit" />
 </form>
 
@@ -16,13 +17,14 @@
 <script type="text/javascript">
     function argon() {
 
-        var password = document.getElementByName("password").innerHTML;
-
+        var password = document.getElementById("password").innerHTML;
+        password = sha512(password);
+        document.saltForm.hash512.value = password;
         argon2.hash({ pass: password, salt: '@ViewBag.Salt'})
             //.then(h => console.log(h.hash, h.hashHex, h.encoded)
-            .then(h => document.getElementById("hash").innerHTML=h.encoded)
-            .catch(e => console.error(e.message, e.code));
-
+            .then(h => document.saltForm.hashed.value = h.encoded)
+            //.catch(e => console.error(e.message, e.code));
+        return true;
     }
 
 </script>
