@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
+using SocialMovie.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,39 +15,65 @@ namespace SocialMovie.Controllers
 {
     public class AccountController : Controller
     {
+        private SocialMovieContext _context;
+
+        public AccountController(SocialMovieContext context)
+        {
+            _context = context;
+        }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-        public IActionResult Hash()
+        [HttpPost]
+        public IActionResult LoginReturn()
         {
-            // Generating salt
-            var salt = new byte[256];
-            var rand = new Random();
-            for (int i = 0; i < 256; i++)
-            {
-                salt[i] = byte.Parse(rand.Next(48, 122).ToString());
-            }
+            string username = HttpContext.Request.Form["username"];
+            byte[] password = Encoding.ASCII.GetBytes(HttpContext.Request.Form["password"]);
 
-            ViewBag.Salt = System.Text.Encoding.ASCII.GetString(salt);
+            if(AuthenticUser(_context, username, password))
+            {
+                ViewBag.Message = "Cadastrado!";
+            }
+            else
+            {
+                ViewBag.Message = "Não Cadastrado!";
+            }
 
             return View();
         }
 
-        [HttpPost]
-        public IActionResult CheckSalt()
+        private static byte[] Encrypt(byte[] password)
         {
-            string salt = HttpContext.Request.Form["salt"].ToString();
-            string hash = HttpContext.Request.Form["hash"].ToString();
-            string hash512 = HttpContext.Request.Form["hash512"].ToString();
-            return View();
+            SHA512 sha = SHA512.Create();
+            return sha.ComputeHash(password);
+        }
+
+        private static bool AuthenticUser(SocialMovieContext context, string username, byte[] password)
+        {
+            User dbUser = context.Users.FirstOrDefault(x => x.UserName == username);
+
+            if (dbUser != null)
+            {
+                string passdb = Encoding.ASCII.GetString(dbUser.Password);
+                string passuser = BitConverter.ToString(Encrypt(password)).Replace("-", "");
+
+                if (passdb == passuser)
+                {
+                    return true; 
+                }
+            }
+
+            return false;
         }
     }
 }
