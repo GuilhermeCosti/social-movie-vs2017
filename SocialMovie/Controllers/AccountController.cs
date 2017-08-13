@@ -52,7 +52,50 @@ namespace SocialMovie.Controllers
             return View();
         }
 
-        private static byte[] Encrypt(byte[] password)
+        [HttpPost]
+        public IActionResult RegisterReturn()
+        {
+            string username = HttpContext.Request.Form["username"];
+            byte[] password = Encoding.ASCII.GetBytes(HttpContext.Request.Form["password"]);
+
+            if(UserExists(_context, username))
+            {
+                ViewBag.Message = "Usuário já existente";
+            }
+            else
+            {
+                byte[] salt = GetSalt();
+                byte[] hashedPassword = GetHash(password);
+                IEnumerable<byte> saltedHash = hashedPassword.Concat(salt);
+                byte[] userPassword = GetHash(saltedHash.ToArray());
+
+                User user = new User();
+                user.UserName = username;
+                user.Password = userPassword;
+                user.Salt = salt;
+                user.Birthday = DateTime.Now;
+
+                _context.Users.Add(user);
+                _context.SaveChanges();
+
+                ViewBag.Message = "Usuário inserido com sucesso!";
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        private static bool UserExists(SocialMovieContext context, string username)
+        {
+            int count = context.Users.Count(x => x.UserName == username);
+            return count > 0 ? true : false;
+        }
+
+        private static byte[] GetHash(byte[] password)
         {
             SHA512 sha = SHA512.Create();
             return sha.ComputeHash(password);
@@ -64,16 +107,31 @@ namespace SocialMovie.Controllers
 
             if (dbUser != null)
             {
-                string passdb = Encoding.ASCII.GetString(dbUser.Password);
-                string passuser = BitConverter.ToString(Encrypt(password)).Replace("-", "");
+                byte[] passwordHash = GetHash(password);
+                IEnumerable<byte> saltedHash = passwordHash.Concat(dbUser.Salt);
+                
+                string saltedHashUser = Encoding.ASCII.GetString(GetHash(saltedHash.ToArray()));
+                string saltedHashDB = Encoding.ASCII.GetString(dbUser.Password);
+                //string passhash = BitConverter.ToString(Encrypt(password)).Replace("-", "");
 
-                if (passdb == passuser)
+                if (saltedHashUser == saltedHashDB)
                 {
                     return true; 
                 }
             }
 
             return false;
+        }
+
+        private static byte[] GetSalt()
+        {
+            byte[] bytes = new byte[64];
+            using (var keyGenerator = RandomNumberGenerator.Create())
+            {
+                keyGenerator.GetBytes(bytes);
+                //return BitConverter.ToString(bytes).Replace("-", "");
+                return bytes;
+            }
         }
     }
 }
