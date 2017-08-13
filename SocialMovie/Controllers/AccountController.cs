@@ -42,11 +42,11 @@ namespace SocialMovie.Controllers
 
             if(AuthenticUser(_context, username, password))
             {
-                ViewBag.Message = "Cadastrado!";
+                ViewBag.Message = "Entrou no sistema!";
             }
             else
             {
-                ViewBag.Message = "Não Cadastrado!";
+                ViewBag.Message = "Usuario ou senha incorretos!";
             }
 
             return View();
