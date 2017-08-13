@@ -8,30 +8,35 @@
 <h1>Adaptive Streaming with HTML5</h1>
 
 <div class="container-fluid" align="center">
-@{ 
-    foreach (var x in @Model)
-    {
 
-        <div class="row" >
-            <div class="col-sm-10" >
-                <div class="row rounded" style="background-color: #CCCCCC">
-                    <div class="offset-sm-2"></div>
-                    <div class="col-sm-8">
-                        <br />
-                        <div align="center" class="embed-responsive embed-responsive-4by3" style="background-color: #5e5e5e">
-                            <video class="embed-responsive-item rounded" id="video_@x.Id" onClick="setupVideo('https', 'socialmovie.sytes.net','4000','@x.MediaURL', '@x.File', '@x.Extension', '@x.Id')" controls></video>
+</div>
+
+
+@* <!-- Antiga Home Page -->
+    @{
+        foreach (var x in @Model)
+        {
+
+            <div class="row" >
+                <div class="col-sm-10" >
+                    <div class="row rounded" style="background-color: #CCCCCC">
+                        <div class="offset-sm-2"></div>
+                        <div class="col-sm-8">
+                            <br />
+                            <div align="center" class="embed-responsive embed-responsive-4by3" style="background-color: #5e5e5e">
+                                <video class="embed-responsive-item rounded" id="video_@x.Id" onClick="setupVideo('https', '192.168.1.50','4000','@x.MediaURL', '@x.File', '@x.Extension', '@x.Id')" controls></video>
+                            </div>
+                            <div class="rounded" style="background-color: #AAAAAA">
+                                <h3></h3>
+                                <p><strong>@x.Name: </strong>@x.Description</p>
+                            </div>
                         </div>
-                        <div class="rounded" style="background-color: #AAAAAA">
-                            <h3></h3>
-                            <p><strong>@x.Name: </strong>@x.Description</p>
-                        </div>
+                        <div class="offset-sm-2"></div>
                     </div>
-                    <div class="offset-sm-2"></div>
                 </div>
             </div>
-        </div>
-        <br />
-        <br />
+            <br />
+            <br />
+        }
     }
-}
-</div>
+*@

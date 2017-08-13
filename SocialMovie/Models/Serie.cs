@@ -10,6 +10,8 @@ namespace SocialMovie.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string ThumbnailPath { get; set; }
+        public ContentType Type { get; set; }
         public DateTime CreatedAt { get; set; }
         public ICollection<Season> Seasons { get; set; }
     }

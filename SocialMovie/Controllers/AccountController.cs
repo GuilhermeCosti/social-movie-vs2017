@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using SocialMovie.Models;
+using SocialMovie.Controllers;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -42,7 +43,7 @@ namespace SocialMovie.Controllers
 
             if(AuthenticUser(_context, username, password))
             {
-                ViewBag.Message = "Entrou no sistema!";
+                return RedirectToAction("Index", "MainMenu");
             }
             else
             {
