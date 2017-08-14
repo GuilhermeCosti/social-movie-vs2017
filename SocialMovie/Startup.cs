@@ -29,6 +29,7 @@ namespace SocialMovie
                 .SetBasePath(_env.ContentRootPath)
                 .AddJsonFile("config.json")
                 .AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -44,13 +45,17 @@ namespace SocialMovie
                 url = Configuration.GetValue<string>("localUrl");
             } else
             {
-
                 url = Configuration.GetValue<string>("releaseUrl");
             }
 
             services.AddDbContext<SocialMovieContext>(options =>
             {
-                options.UseMySQL($"server={url};userid=root;pwd=joaopio1234;port=3306;database=socialmovie;sslmode=none;");
+                var userid = Configuration.GetValue<string>("userid");
+                var pwd = Configuration.GetValue<string>("pwd");
+                var port = Configuration.GetValue<string>("port");
+                var database = Configuration.GetValue<string>("database");
+
+                options.UseMySQL($"server={url};userid={userid};pwd={pwd};port={port};database={database};sslmode=none;");
             });
             services.AddMvc();
         }
@@ -63,6 +68,7 @@ namespace SocialMovie
             app.UseStaticFiles(new StaticFileOptions() {
                 ServeUnknownFileTypes = true
             });
+
             //app.UseFileServer(new FileServerOptions() {
             //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Movies")),
             //    RequestPath = new PathString("/movies"),
@@ -87,8 +93,6 @@ namespace SocialMovie
             });
 
             app.UseMvcWithDefaultRoute();
-
-
         }
     }
 }

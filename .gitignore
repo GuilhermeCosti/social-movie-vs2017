@@ -1,5 +1,6 @@
 SocialMovie/bin
 SocialMovie/obj
 SocialMovie/out
+SocialMovie/config.json
 .*
 !/.gitignore

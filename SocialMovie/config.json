@@ -1,4 +1,8 @@
 ﻿{
   "localUrl": "localhost",
-  "releaseUrl": "socialmovie.sytes.net"
+  "releaseUrl": "socialmovie.sytes.net",
+  "userid": "root",
+  "pwd": "joaopio1234",
+  "database": "socialmovie",
+  "port": "3306"
 }
