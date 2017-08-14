@@ -79,8 +79,8 @@ namespace SocialMovie
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
-                AuthenticationScheme = "MyCookieMiddlewareInstance",
-                LoginPath = new PathString("/Account/Unauthorized/"),
+                AuthenticationScheme = "CookieAuthentication",
+                LoginPath = new PathString("/Account/Login/"),
                 AccessDeniedPath = new PathString("/Account/Forbidden/"),
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true

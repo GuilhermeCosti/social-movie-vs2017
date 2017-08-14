@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SocialMovie.Models;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,8 @@ namespace SocialMovie.Controllers
             _context = context;
             _context.Database.EnsureCreated();
         }
-
+        
+        [Authorize]
         public IActionResult Index()
         {
             IEnumerable<Movie> data = _context.Movies.ToList();

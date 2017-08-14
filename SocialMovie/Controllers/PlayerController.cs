@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SocialMovie.Models;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace SocialMovie.Controllers
             _context = context;
         }
 
+        [Authorize]
         public IActionResult Index(int id)
         {
             Movie movie = _context.Movies.FirstOrDefault(x => x.Id == id);
@@ -26,6 +28,7 @@ namespace SocialMovie.Controllers
             return View(movie);
         }
 
+        [Authorize]
         public IActionResult PlayerError()
         {
             return View();

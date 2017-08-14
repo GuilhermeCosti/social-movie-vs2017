@@ -2,16 +2,25 @@
     Layout = "_HomePageLayout";
 }
 
-<h1>Register</h1>
-
-<form name="registerForm" asp-action="RegisterReturn" asp-controller="Account" method="post">
-    <div>
-        <input type="text" name="username" placeholder="Username" />
+<div class="container-fluid" style="width: 60%; height:200px; margin: 20% auto 0 auto;">
+    <div class="row">
+        <div class="offset-lg-4"></div>
+        <div class="col-lg-4">
+            <form name="registerForm" asp-action="RegisterReturn" asp-controller="Account" method="post" style="background-color: #aa1f1f" class="rounded">
+                <br />
+                <h1>Register</h1>
+                <div>
+                    <input type="text" name="username" placeholder="Username" />
+                </div>
+                <div>
+                    <input type="password" name="password" placeholder="Password" />
+                </div>
+                <div>
+                    <input type="submit" name="submit" value="Submit" />
+                </div>
+                <br />
+            </form>
+        </div>
+        <div class="offset-lg-4"></div>
     </div>
-    <div>
-        <input type="password" name="password" placeholder="Password" />
-    </div>
-    <div>
-        <input type="submit" name="submit" value="Submit" />
-    </div>
-</form>
+</div>

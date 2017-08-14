@@ -8,6 +8,8 @@ using System.Security.Cryptography;
 using SocialMovie.Models;
 using SocialMovie.Controllers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -36,13 +38,23 @@ namespace SocialMovie.Controllers
         }
 
         [HttpPost]
-        public IActionResult LoginReturn()
+        public async Task<IActionResult> LoginReturn()
         {
             string username = HttpContext.Request.Form["username"];
             byte[] password = Encoding.ASCII.GetBytes(HttpContext.Request.Form["password"]);
 
             if(AuthenticUser(_context, username, password))
             {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, username)
+                };
+
+                var userIdentity = new ClaimsIdentity(claims, "login");
+
+                ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                await HttpContext.Authentication.SignInAsync("CookieAuthentication", principal);
+
                 return RedirectToAction("Index", "MainMenu");
             }
             else
@@ -51,6 +63,12 @@ namespace SocialMovie.Controllers
             }
 
             return View();
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.Authentication.SignOutAsync("CookieAuthentication");
+            return Redirect("/Account/Login");
         }
 
         [HttpPost]
@@ -79,7 +97,8 @@ namespace SocialMovie.Controllers
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
-                ViewBag.Message = "Usuário inserido com sucesso!";
+                return RedirectToAction("Login", "Account");
+                //ViewBag.Message = "Usuário inserido com sucesso!";
             }
             return View();
         }
