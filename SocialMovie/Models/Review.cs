@@ -11,9 +11,19 @@ namespace SocialMovie.Models
         public string Title { get; set; }
         public string Body { get; set; }
         public User Reviewer { get; set; }
-        public int IdContent{ get; set; }
+        public Content Content { get; set; }
+        public Rating Rating { get; set; }
         public int Likes { get; set; }
         public int Deslikes { get; set; }
 
+    }
+
+    public enum Rating : byte
+    {
+        Horrible = 1,
+        Bad = 2,
+        Regular = 3,
+        Good = 4,
+        Excellent = 5
     }
 }

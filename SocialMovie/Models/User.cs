@@ -14,7 +14,7 @@ namespace SocialMovie.Models
         public string UserName { get; set; }
         public byte[] Password { get; set; }
         public byte[] Salt { get; set; }
-        public string AvatarImagePath { get; set; }
+        public Archive Avatar { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
 
