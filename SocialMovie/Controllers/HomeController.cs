@@ -23,7 +23,7 @@ namespace SocialMovie.Controllers
         public IActionResult Index()
         {
             //return View();
-            return RedirectToAction("Index", "MainMenu");
+            return RedirectToAction("Index", "Login");
         }
     }
 }
