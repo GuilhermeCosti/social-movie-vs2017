@@ -11,7 +11,7 @@ namespace SocialMovie.Models
         public string Title { get; set; }
         public string Body { get; set; }
         public User Reviewer { get; set; }
-        public IContent Content{ get; set; }
+        public int IdContent{ get; set; }
         public int Likes { get; set; }
         public int Deslikes { get; set; }
 

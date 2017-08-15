@@ -24,23 +24,23 @@ namespace SocialMovie.Models
                 .Property(r => r.Deslikes)
                 .HasDefaultValue(0);
 
-            modelBuilder.Entity<Rating>()
+            modelBuilder.Entity<Movie>()
                 .Property(r => r.Star1)
                 .HasDefaultValue(0);
 
-            modelBuilder.Entity<Rating>()
+            modelBuilder.Entity<Movie>()
                 .Property(r => r.Star2)
                 .HasDefaultValue(0);
 
-            modelBuilder.Entity<Rating>()
+            modelBuilder.Entity<Movie>()
                 .Property(r => r.Star3)
                 .HasDefaultValue(0);
 
-            modelBuilder.Entity<Rating>()
+            modelBuilder.Entity<Movie>()
                 .Property(r => r.Star4)
                 .HasDefaultValue(0);
 
-            modelBuilder.Entity<Rating>()
+            modelBuilder.Entity<Movie>()
                 .Property(r => r.Star5)
                 .HasDefaultValue(0);
         }
@@ -50,6 +50,5 @@ namespace SocialMovie.Models
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Episode> Episodes { get; set; }
         public DbSet<Review> Reviews { get; set; }
-        public DbSet<Rating> Ratings { get; set; }
     }
 }

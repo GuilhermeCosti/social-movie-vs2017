@@ -21,8 +21,8 @@ namespace SocialMovie.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            IEnumerable<Movie> data = _context.Movies.ToList();
-            return View(data);
+            IEnumerable<Movie> movies = _context.Movies.ToList();
+            return View(movies);
         }
     }
 

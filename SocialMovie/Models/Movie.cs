@@ -16,5 +16,10 @@ namespace SocialMovie.Models
         public string ThumbnailPath { get; set; }
         public ContentType Type { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int Star1 { get; set; }
+        public int Star2 { get; set; }
+        public int Star3 { get; set; }
+        public int Star4 { get; set; }
+        public int Star5 { get; set; }
     }
 }

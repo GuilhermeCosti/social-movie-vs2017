@@ -14,5 +14,10 @@ namespace SocialMovie.Models
         public ContentType Type { get; set; }
         public DateTime CreatedAt { get; set; }
         public ICollection<Season> Seasons { get; set; }
+        public int Star1 { get; set; }
+        public int Star2 { get; set; }
+        public int Star3 { get; set; }
+        public int Star4 { get; set; }
+        public int Star5 { get; set; }
     }
 }
