@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SocialMovie.Models
 {
-    interface IContent
+    public interface IContent
     {
         int Id { get; set; }
         string Name { get; set; }
