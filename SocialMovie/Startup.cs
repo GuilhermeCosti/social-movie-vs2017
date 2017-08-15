@@ -50,12 +50,7 @@ namespace SocialMovie
 
             services.AddDbContext<SocialMovieContext>(options =>
             {
-                var userid = Configuration.GetValue<string>("userid");
-                var pwd = Configuration.GetValue<string>("pwd");
-                var port = Configuration.GetValue<string>("port");
-                var database = Configuration.GetValue<string>("database");
-
-                options.UseMySQL($"server={url};userid={userid};pwd={pwd};port={port};database={database};sslmode=none;");
+                options.UseMySQL($"server=localhost;userid=root;pwd=joaopio1234;port=3306;database=socialmovie;sslmode=none;");
             });
             services.AddMvc();
         }

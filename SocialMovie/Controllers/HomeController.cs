@@ -20,7 +20,6 @@ namespace SocialMovie.Controllers
             _context.Database.EnsureCreated();
         }
 
-        [Authorize]
         public IActionResult Index()
         {
             //return View();
