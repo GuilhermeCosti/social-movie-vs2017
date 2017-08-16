@@ -18,6 +18,36 @@ namespace SocialMovie.Controllers
         {
             _context = context;
             _context.Database.EnsureCreated();
+
+            Content split =_context.Contents.FirstOrDefault(c => c.Name == "Split");
+            if(split == null)
+            {
+                var movie = new Movie()
+                {
+                    Name = "Split",
+                    Description = "Rapaz que rouba mocas",
+                    Type = ContentType.Movie,
+                    Thumbnail = new Archive()
+                    {
+                        Name = "split",
+                        Path = "split/",
+                        Extension = ".jpg",
+                        Type = ArchiveType.Image
+                    },
+                    VideoFile = new Archive()
+                    {
+                        Name = "Split",
+                        Path = "split/video",
+                        Extension = "mpd",
+                        Type = ArchiveType.Video
+                    }
+                };
+
+                _context.Contents.Add(movie);
+                _context.SaveChanges();
+            }
+
+
         }
 
         public IActionResult Index()

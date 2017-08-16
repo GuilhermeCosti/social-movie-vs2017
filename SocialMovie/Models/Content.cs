@@ -17,7 +17,6 @@ namespace SocialMovie.Models
         public int Star3 { get; set; }
         public int Star4 { get; set; }
         public int Star5 { get; set; }
-        public DateTime CreatedAt { get; set; }
     }
 
     public enum ContentType : byte

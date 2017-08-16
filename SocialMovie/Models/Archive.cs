@@ -12,6 +12,12 @@ namespace SocialMovie.Models
         public string Path { get; set; }
         public string Extension { get; set; }
         public ArchiveType Type { get; set; }
+        public string FullPath {
+            get
+            {
+                return Path + Name + Extension;
+            } 
+        }
     }
 
     public enum ArchiveType

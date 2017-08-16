@@ -21,9 +21,15 @@ namespace SocialMovie.Controllers
         public IActionResult Index(int id)
         {
             Movie movie = _context.Movies.FirstOrDefault(x => x.Id == id);
-            if(movie == null)
+            //List<Archive> file = _context.Archives.ToList();
+            if (movie == null)
             {
                 return PlayerError();
+            }
+
+            if (movie.Type == ContentType.Movie)
+            {
+
             }
             return View(movie);
         }
