@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SocialMovie.Models;
 using System;
 using System.Collections.Generic;
@@ -20,17 +21,16 @@ namespace SocialMovie.Controllers
         [Authorize]
         public IActionResult Index(int id)
         {
-            Movie movie = _context.Movies.FirstOrDefault(x => x.Id == id);
-            //List<Archive> file = _context.Archives.ToList();
+            Movie movie = _context.Movies
+                .Include(m => m.VideoFile)
+                .Include(m => m.Thumbnail)
+                .FirstOrDefault(m => m.Id == id); 
+
             if (movie == null)
             {
                 return PlayerError();
             }
 
-            if (movie.Type == ContentType.Movie)
-            {
-
-            }
             return View(movie);
         }
 

@@ -36,11 +36,16 @@ namespace SocialMovie.Controllers
                     },
                     VideoFile = new Archive()
                     {
-                        Name = "Split",
+                        Name = "stream",
                         Path = "split/video",
                         Extension = "mpd",
                         Type = ArchiveType.Video
-                    }
+                    },
+                    Star1 = 10,
+                    Star2 = 20,
+                    Star3 = 30,
+                    Star4 = 40,
+                    Star5 = 50
                 };
 
                 _context.Contents.Add(movie);

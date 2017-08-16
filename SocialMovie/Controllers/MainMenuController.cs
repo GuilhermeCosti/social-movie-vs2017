@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using SocialMovie.Models;
 using System;
@@ -21,7 +22,9 @@ namespace SocialMovie.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            IEnumerable<Content> contents= _context.Contents.ToList();
+            IEnumerable<Content> contents= _context.Contents
+                .Include(c => c.Thumbnail)
+                .ToList();
             return View(contents);
         }
     }
