@@ -19,25 +19,53 @@ namespace SocialMovie.Controllers
         }
 
         [Authorize]
-        public IActionResult Index(int id)
+        public IActionResult Index(int id, ContentType type)
         {
-            Movie movie = _context.Movies
-                .Include(m => m.VideoFile)
-                .Include(m => m.Thumbnail)
-                .FirstOrDefault(m => m.Id == id); 
-
-            if (movie == null)
+            switch (type)
             {
-                return PlayerError();
+                case ContentType.Movie:
+                    return RedirectToAction("PlayerMovie", new { id = id });
+                case ContentType.Episode:
+                    return RedirectToAction("ViewSerie", new { id = id });
+                default:
+                    break;
             }
 
-            return View(movie);
+            return PlayerError();
         }
 
         [Authorize]
         public IActionResult PlayerError()
         {
             return View();
+        }
+
+        [Authorize]
+        public IActionResult ViewSerie(int id)
+        {
+            Serie serie = _context.Series
+                .Include(s => s.Episodes)
+                .FirstOrDefault(s => s.Id == id);
+            return View(serie);
+        }
+
+        [Authorize]
+        public IActionResult PlayerEpisode(int id)
+        {
+            var episode = _context.Episodes
+                .Include(e => e.VideoFile)
+                .FirstOrDefault(e => e.Id == id);
+            return View(episode);
+        }
+
+        [Authorize]
+        public IActionResult PlayerMovie(int id)
+        {
+            Movie movie = _context.Movies
+              .Include(m => m.VideoFile)
+              .Include(m => m.Thumbnail)
+              .FirstOrDefault(m => m.Id == id);
+            return View(movie);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SocialMovie.Controllers
             _context.Database.EnsureCreated();
 
             Content split =_context.Contents.FirstOrDefault(c => c.Name == "Split");
-            if(split == null)
+            if (split == null)
             {
                 var movie = new Movie()
                 {
@@ -47,11 +47,52 @@ namespace SocialMovie.Controllers
                     Star4 = 40,
                     Star5 = 50
                 };
-
                 _context.Contents.Add(movie);
-                _context.SaveChanges();
             }
 
+            Content tomjerry = _context.Contents.FirstOrDefault(c => c.Name == "Tom and Jerry");
+            if (tomjerry == null)
+            {
+                var jerrygoround = new Archive()
+                {
+                    Extension = "mpd",
+                    Name = "JerryGoRound_vod",
+                    Path = "JerryGoRound_output"
+                };
+
+                var justducky = new Archive()
+                {
+                    Extension = "mpd",
+                    Name = "JustDucky_vod",
+                    Path = "JustDucky_output"
+                };
+
+                var episodes = new List<Episode>();
+                episodes.Add(new Episode() { ENumber = 1, SNumber = 1, VideoFile = jerrygoround });
+                episodes.Add(new Episode() { ENumber = 2, SNumber = 2, VideoFile = justducky });
+
+                var serie = new Serie()
+                {
+                    Name = "Tom and Jerry",
+                    Description = "Gato e rato",
+                    Type = ContentType.Episode,
+                    Thumbnail = new Archive()
+                    {
+                        Name = "tom",
+                        Path = "jerry/",
+                        Extension = ".jpg",
+                        Type = ArchiveType.Image
+                    },
+                    Episodes = episodes,
+                    Star1 = 10,
+                    Star2 = 20,
+                    Star3 = 30,
+                    Star4 = 40,
+                    Star5 = 50
+                };
+                _context.Contents.Add(serie);
+            }
+            _context.SaveChanges();
 
         }
 
