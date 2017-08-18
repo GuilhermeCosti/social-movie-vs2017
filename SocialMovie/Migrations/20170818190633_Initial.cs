@@ -25,6 +25,27 @@ namespace SocialMovie.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:AutoIncrement", true),
+                    ArchiveId = table.Column<int>(nullable: false),
+                    Body = table.Column<string>(nullable: true),
+                    Deslikes = table.Column<int>(nullable: false, defaultValue: 0)
+                        .Annotation("MySQL:AutoIncrement", true),
+                    Likes = table.Column<int>(nullable: false, defaultValue: 0)
+                        .Annotation("MySQL:AutoIncrement", true),
+                    Rating = table.Column<byte>(nullable: false),
+                    ReviewerId = table.Column<int>(nullable: false),
+                    Title = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Contents",
                 columns: table => new
                 {
@@ -117,39 +138,6 @@ namespace SocialMovie.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Reviews",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
-                    Body = table.Column<string>(nullable: true),
-                    ContentId = table.Column<int>(nullable: true),
-                    Deslikes = table.Column<int>(nullable: false, defaultValue: 0)
-                        .Annotation("MySQL:AutoIncrement", true),
-                    Likes = table.Column<int>(nullable: false, defaultValue: 0)
-                        .Annotation("MySQL:AutoIncrement", true),
-                    Rating = table.Column<byte>(nullable: false),
-                    ReviewerId = table.Column<int>(nullable: true),
-                    Title = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reviews", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Reviews_Contents_ContentId",
-                        column: x => x.ContentId,
-                        principalTable: "Contents",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Reviews_Users_ReviewerId",
-                        column: x => x.ReviewerId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Contents_ThumbnailId",
                 table: "Contents",
@@ -171,16 +159,6 @@ namespace SocialMovie.Migrations
                 column: "VideoFileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_ContentId",
-                table: "Reviews",
-                column: "ContentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_ReviewerId",
-                table: "Reviews",
-                column: "ReviewerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_AvatarId",
                 table: "Users",
                 column: "AvatarId");
@@ -195,10 +173,10 @@ namespace SocialMovie.Migrations
                 name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "Contents");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Contents");
 
             migrationBuilder.DropTable(
                 name: "Archives");

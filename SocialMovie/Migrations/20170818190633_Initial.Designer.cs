@@ -8,7 +8,7 @@ using SocialMovie.Models;
 namespace SocialMovie.Migrations
 {
     [DbContext(typeof(SocialMovieContext))]
-    [Migration("20170816020521_Initial")]
+    [Migration("20170818190633_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -106,9 +106,9 @@ namespace SocialMovie.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Body");
+                    b.Property<int>("ArchiveId");
 
-                    b.Property<int?>("ContentId");
+                    b.Property<string>("Body");
 
                     b.Property<int>("Deslikes")
                         .ValueGeneratedOnAdd()
@@ -120,15 +120,11 @@ namespace SocialMovie.Migrations
 
                     b.Property<byte>("Rating");
 
-                    b.Property<int?>("ReviewerId");
+                    b.Property<int>("ReviewerId");
 
                     b.Property<string>("Title");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ContentId");
-
-                    b.HasIndex("ReviewerId");
 
                     b.ToTable("Reviews");
                 });
@@ -198,17 +194,6 @@ namespace SocialMovie.Migrations
                     b.HasOne("SocialMovie.Models.Archive", "VideoFile")
                         .WithMany()
                         .HasForeignKey("VideoFileId");
-                });
-
-            modelBuilder.Entity("SocialMovie.Models.Review", b =>
-                {
-                    b.HasOne("SocialMovie.Models.Content", "Content")
-                        .WithMany()
-                        .HasForeignKey("ContentId");
-
-                    b.HasOne("SocialMovie.Models.User", "Reviewer")
-                        .WithMany()
-                        .HasForeignKey("ReviewerId");
                 });
 
             modelBuilder.Entity("SocialMovie.Models.User", b =>

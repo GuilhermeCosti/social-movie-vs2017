@@ -61,11 +61,17 @@ namespace SocialMovie.Controllers
         [Authorize]
         public IActionResult PlayerMovie(int id)
         {
+
             Movie movie = _context.Movies
               .Include(m => m.VideoFile)
               .Include(m => m.Thumbnail)
               .FirstOrDefault(m => m.Id == id);
-            return View(movie);
+
+            List<Review> reviews = _context.Reviews.Where(r => r.ArchiveId == movie.VideoFile.Id).ToList();
+
+            ViewData["reviews"] = reviews;
+            ViewData["movie"] = movie;
+            return View();
         }
     }
 }
