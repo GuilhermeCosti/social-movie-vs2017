@@ -88,11 +88,13 @@ namespace SocialMovie.Controllers
                 IEnumerable<byte> saltedHash = hashedPassword.Concat(salt);
                 byte[] userPassword = GetHash(saltedHash.ToArray());
 
-                User user = new User();
-                user.UserName = username;
-                user.Password = userPassword;
-                user.Salt = salt;
-                user.Birthday = DateTime.Now;
+                User user = new User
+                {
+                    UserName = username,
+                    Password = userPassword,
+                    Salt = salt,
+                    Birthday = DateTime.Now
+                };
 
                 _context.Users.Add(user);
                 _context.SaveChanges();
