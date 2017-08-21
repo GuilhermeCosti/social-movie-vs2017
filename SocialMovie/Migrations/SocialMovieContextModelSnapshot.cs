@@ -85,6 +85,8 @@ namespace SocialMovie.Migrations
 
                     b.Property<int>("ENumber");
 
+                    b.Property<string>("Name");
+
                     b.Property<int>("SNumber");
 
                     b.Property<int?>("SerieId");

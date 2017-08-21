@@ -117,6 +117,7 @@ namespace SocialMovie.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
                     ENumber = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     SNumber = table.Column<int>(nullable: false),
                     SerieId = table.Column<int>(nullable: true),
                     VideoFileId = table.Column<int>(nullable: true)

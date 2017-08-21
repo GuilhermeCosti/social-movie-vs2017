@@ -8,7 +8,7 @@ using SocialMovie.Models;
 namespace SocialMovie.Migrations
 {
     [DbContext(typeof(SocialMovieContext))]
-    [Migration("20170818190633_Initial")]
+    [Migration("20170821014828_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,6 +85,8 @@ namespace SocialMovie.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("ENumber");
+
+                    b.Property<string>("Name");
 
                     b.Property<int>("SNumber");
 

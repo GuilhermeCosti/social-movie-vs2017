@@ -8,6 +8,7 @@ namespace SocialMovie.Models
     public class Episode
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public int ENumber { get; set; }
         public int SNumber { get; set; }
         public Archive VideoFile { get; set; }
