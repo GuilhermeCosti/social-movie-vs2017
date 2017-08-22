@@ -32,7 +32,6 @@ namespace SocialMovie.Controllers
             _emailSettings = emailSettings.Value;
         }
 
-        // GET: /<controller>/
         public IActionResult Index()
         {
             return View();
@@ -50,7 +49,7 @@ namespace SocialMovie.Controllers
             string username = HttpContext.Request.Form["username"];
             byte[] password = Encoding.ASCII.GetBytes(HttpContext.Request.Form["password"]);
 
-            if(AuthenticUser(_context, username, password))
+            if(UserValidation.AuthenticUser(_context, username, password))
             {
                 var claims = new List<Claim>
                 {
@@ -83,30 +82,18 @@ namespace SocialMovie.Controllers
         {
             string username = HttpContext.Request.Form["username"];
             byte[] password = Encoding.ASCII.GetBytes(HttpContext.Request.Form["password"]);
-            string userEmailAddress = HttpContext.Request.Form["email"];
+            string email = HttpContext.Request.Form["email"];
 
-            if(UserExists(_context, username))
+            if(UserValidation.UserExists(_context, username))
             {
                 ViewBag.Message = "Usuário já existente";
             }
             else
             {
-                byte[] salt = GetSalt();
-                byte[] hashedPassword = GetHash(password);
-                IEnumerable<byte> saltedHash = hashedPassword.Concat(salt);
-                byte[] userPassword = GetHash(saltedHash.ToArray());
 
-                User user = new User
-                {
-                    UserName = username,
-                    Password = userPassword,
-                    Salt = salt,
-                    Birthday = DateTime.Now
-                };
+                User user = UserValidation.CreateUser(username, password, email);
 
-                SendEmailTo(userEmailAddress, username, password, _emailSettings);
-
-
+                SendEmailTo(email, username, password, _emailSettings);
 
                 _context.Users.Add(user);
                 _context.SaveChanges();
@@ -148,49 +135,6 @@ namespace SocialMovie.Controllers
         public IActionResult Register()
         {
             return View();
-        }
-
-        private static bool UserExists(SocialMovieContext context, string username)
-        {
-            int count = context.Users.Count(x => x.UserName == username);
-            return count > 0 ? true : false;
-        }
-
-        private static byte[] GetHash(byte[] password)
-        {
-            SHA512 sha = SHA512.Create();
-            return sha.ComputeHash(password);
-        }
-
-        private static bool AuthenticUser(SocialMovieContext context, string username, byte[] password)
-        {
-            User dbUser = context.Users.FirstOrDefault(x => x.UserName == username);
-
-            if (dbUser != null)
-            {
-                byte[] passwordHash = GetHash(password);
-                IEnumerable<byte> saltedHash = passwordHash.Concat(dbUser.Salt);
-                
-                string saltedHashUser = Encoding.ASCII.GetString(GetHash(saltedHash.ToArray()));
-                string saltedHashDB = Encoding.ASCII.GetString(dbUser.Password);
-
-                if (saltedHashUser == saltedHashDB)
-                {
-                    return true; 
-                }
-            }
-
-            return false;
-        }
-
-        private static byte[] GetSalt()
-        {
-            byte[] bytes = new byte[64];
-            using (var keyGenerator = RandomNumberGenerator.Create())
-            {
-                keyGenerator.GetBytes(bytes);
-                return bytes;
-            }
         }
     }
 }
