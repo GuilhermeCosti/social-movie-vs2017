@@ -100,8 +100,9 @@ namespace SocialMovie.Controllers
                 };
 
 
-                var client = new SmtpClient("mysmtpserver");
+                var client = new SmtpClient("smtp.mail.com", 587);
                 client.UseDefaultCredentials = false;
+		client.EnableSsl = true;
                 client.Credentials = new NetworkCredential("socialmovie@mail.com", "joaopio123!@#JPP");
 
                 MailMessage mailMessage = new MailMessage();
