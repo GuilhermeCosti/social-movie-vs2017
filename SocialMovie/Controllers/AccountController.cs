@@ -13,6 +13,8 @@ using System.Security.Claims;
 using System.Net.Http;
 using System.Net;
 using System.Net.Mail;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -22,10 +24,12 @@ namespace SocialMovie.Controllers
     public class AccountController : Controller
     {
         private SocialMovieContext _context;
+        private EmailSettings _emailSettings;
 
-        public AccountController(SocialMovieContext context)
+        public AccountController(SocialMovieContext context, IOptions<EmailSettings> emailSettings)
         {
             _context = context;
+            _emailSettings = emailSettings.Value;
         }
 
         // GET: /<controller>/
@@ -79,7 +83,7 @@ namespace SocialMovie.Controllers
         {
             string username = HttpContext.Request.Form["username"];
             byte[] password = Encoding.ASCII.GetBytes(HttpContext.Request.Form["password"]);
-            string email = HttpContext.Request.Form["email"];
+            string userEmailAddress = HttpContext.Request.Form["email"];
 
             if(UserExists(_context, username))
             {
@@ -100,27 +104,44 @@ namespace SocialMovie.Controllers
                     Birthday = DateTime.Now
                 };
 
+                SendEmailTo(userEmailAddress, username, password, _emailSettings);
 
-                var client = new SmtpClient("smtp.mail.com", 587);
-                client.UseDefaultCredentials = false;
-                client.EnableSsl = true;
-                client.Credentials = new NetworkCredential("socialmovie@mail.com", "joaopio123!@#JPP");
-
-                MailMessage mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress("socialmovie@mail.com");
-                mailMessage.To.Add(email);
-                mailMessage.Body = $"Voce recebeu este email pois se registrou em SocialMovie. Parabéns! Seu usuário está cadastrado com sucesso! Usuário: {username}, Senha: {Encoding.ASCII.GetString(password)}";
-                mailMessage.Subject = "Cadastro SocialMovie";
-                client.Send(mailMessage);
 
 
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
                 return RedirectToAction("Login", "Account");
-                //ViewBag.Message = "Usuário inserido com sucesso!";
             }
             return View();
+        }
+
+        public void SendEmailTo(string emailAddress, string username, byte[] password, EmailSettings emailSettings)
+        {
+
+            MailMessage mailMessage = new MailMessage
+            {
+                From = new MailAddress(emailSettings.From),
+                Body = $"Voce recebeu este email pois se registrou em SocialMovie. Parabéns! Seu usuário está cadastrado com sucesso! Usuário: {username}, Senha: {Encoding.ASCII.GetString(password)}",
+                Subject = "Cadastro SocialMovie"
+            };
+            mailMessage.To.Add(emailAddress);
+
+
+            SmtpClient client = new SmtpClient(emailSettings.Server, emailSettings.Port)
+            {
+                UseDefaultCredentials = false,
+                EnableSsl = true,
+                Credentials = new NetworkCredential(emailSettings.Login, emailSettings.Password)
+            };
+
+            client.SendCompleted += (s, e) =>
+            {
+                client.Dispose();
+                mailMessage.Dispose();
+            };
+
+            client.SendAsync(mailMessage, null);
         }
 
         [HttpGet]
@@ -152,7 +173,6 @@ namespace SocialMovie.Controllers
                 
                 string saltedHashUser = Encoding.ASCII.GetString(GetHash(saltedHash.ToArray()));
                 string saltedHashDB = Encoding.ASCII.GetString(dbUser.Password);
-                //string passhash = BitConverter.ToString(Encrypt(password)).Replace("-", "");
 
                 if (saltedHashUser == saltedHashDB)
                 {
@@ -169,7 +189,6 @@ namespace SocialMovie.Controllers
             using (var keyGenerator = RandomNumberGenerator.Create())
             {
                 keyGenerator.GetBytes(bytes);
-                //return BitConverter.ToString(bytes).Replace("-", "");
                 return bytes;
             }
         }

@@ -28,6 +28,7 @@ namespace SocialMovie
             var builder = new ConfigurationBuilder()
                 .SetBasePath(_env.ContentRootPath)
                 .AddJsonFile("config.json")
+                .AddJsonFile("Configurations/email.json")
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
@@ -37,6 +38,7 @@ namespace SocialMovie
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<SocialMovieContext>();
+            services.Configure<EmailSettings>(Configuration);
             string url = "";
 
             if (_env.IsDevelopment())
