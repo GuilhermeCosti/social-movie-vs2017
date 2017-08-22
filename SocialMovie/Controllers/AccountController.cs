@@ -109,7 +109,7 @@ namespace SocialMovie.Controllers
                 MailMessage mailMessage = new MailMessage();
                 mailMessage.From = new MailAddress("socialmovie@mail.com");
                 mailMessage.To.Add(email);
-                mailMessage.Body = $"Voce recebeu este email pois se registrou em SocialMovie. Parabéns! Seu usuário está cadastrado com sucesso! Usuário: {username}, Senha: {password}";
+                mailMessage.Body = $"Voce recebeu este email pois se registrou em SocialMovie. Parabéns! Seu usuário está cadastrado com sucesso! Usuário: {username}, Senha: {Encoding.ASCII.GetString(password)}";
                 mailMessage.Subject = "Cadastro SocialMovie";
                 client.Send(mailMessage);
 
