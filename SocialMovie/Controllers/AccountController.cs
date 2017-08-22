@@ -10,6 +10,9 @@ using SocialMovie.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using System.Net.Http;
+using System.Net;
+using System.Net.Mail;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -96,8 +99,21 @@ namespace SocialMovie.Controllers
                     Birthday = DateTime.Now
                 };
 
-                _context.Users.Add(user);
-                _context.SaveChanges();
+
+                var client = new SmtpClient("mysmtpserver");
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential("socialmovie@mail.com", "joaopio123!@#JPP");
+
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress("socialmovie@mail.com");
+                mailMessage.To.Add("joao-pio@hotmail.com");
+                mailMessage.Body = "boiola";
+                mailMessage.Subject = "Deu certo!";
+                client.Send(mailMessage);
+
+
+                //_context.Users.Add(user);
+                //_context.SaveChanges();
 
                 return RedirectToAction("Login", "Account");
                 //ViewBag.Message = "Usuário inserido com sucesso!";
