@@ -27,7 +27,7 @@ namespace SocialMovie
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(_env.ContentRootPath)
-                .AddJsonFile("config.json")
+                .AddJsonFile("Configurations/database.json")
                 .AddJsonFile("Configurations/email.json")
                 .AddEnvironmentVariables();
 
@@ -39,15 +39,15 @@ namespace SocialMovie
         {
             services.AddScoped<SocialMovieContext>();
             services.Configure<EmailSettings>(Configuration);
-            string url = "";
 
             if (_env.IsDevelopment())
             {
                 services.AddDirectoryBrowser();
-                url = Configuration.GetValue<string>("localUrl");
-            } else
+                var url = Configuration.GetValue<string>("localUrl");
+            }
+            else
             {
-                url = Configuration.GetValue<string>("releaseUrl");
+                var url = Configuration.GetValue<string>("releaseUrl");
             }
 
             services.AddDbContext<SocialMovieContext>(options =>
@@ -60,7 +60,11 @@ namespace SocialMovie
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseDeveloperExceptionPage();
+            if(_env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
             app.UseDefaultFiles();
             app.UseStaticFiles(new StaticFileOptions() {
                 ServeUnknownFileTypes = true

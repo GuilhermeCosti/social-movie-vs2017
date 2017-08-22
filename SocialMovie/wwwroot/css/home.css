@@ -5,3 +5,21 @@
     -o-background-size: no-repeat center fixed;
     background-size: no-repeat center fixed;
 }
+
+video {
+    background-color: #000000;
+    border: 5px solid red;
+}
+
+#progressBar {
+    border: 1px solid #aaa;
+    color: #fff;
+    width: 295px;
+    height: 20px;
+}
+
+#progress {
+    background-color: #ff0000;
+    // red height:20px;
+    display: inline-block;
+}

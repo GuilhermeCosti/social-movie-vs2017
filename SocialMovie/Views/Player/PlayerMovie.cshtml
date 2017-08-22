@@ -11,13 +11,20 @@
                     <div class="offset-sm-2"></div>
                     <div class="col-sm-8">
                         <br />
-                        <div align="center" class="embed-responsive embed-responsive-4by3" style="background-color: #5e5e5e">
-                            <video class="embed-responsive-item rounded" id="video_@movie.Id" poster="https://socialmovie.sytes.net:4000/@movie.Thumbnail.FullPath" onClick="setupVideo('https', 'socialmovie.sytes.net','4000','@movie.VideoFile.Path', '@movie.VideoFile.Name', '@movie.VideoFile.Extension', '@movie.Id')" controls></video>
+                        <div align="center" class="embed-responsive embed-responsive-4by3" style="background-color: #000000">
+                            <video class="video-js vjs-default-skin" id="video_@movie.Id" poster="https://socialmovie.sytes.net:4000/@movie.Thumbnail.FullPath" onClick="setupVideo('https', 'socialmovie.sytes.net','4000','@movie.VideoFile.Path', '@movie.VideoFile.Name', '@movie.VideoFile.Extension', '@movie.Id')" controls></video>
+
                         </div>
                         <div class="rounded" style="background-color: #AAAAAA">
                             <h3></h3>
                             <p><strong>@movie.Name </strong>@movie.Description</p>
                         </div>
+                        <div id="controls">
+                            <button id="playpause" title="play" onclick="togglePlayPause();">Play</button>
+                        </div>
+                        <input id="volume" min="0" max="1" step="0.1" type="range" onchange="setVolume()"/>
+                        <button id="mute" onclick="toggleMute()">Mute</button>
+                        <div id="progressBar"><span id="progress"></span></div>
                     </div>
                     <div class="offset-sm-2"></div>
                 </div>
@@ -83,3 +90,44 @@
     <br />
     <br />
 </div>
+
+<script>
+    // Grab a handle to the video
+    var video = document.getElementById("video_3");
+    // Turn off the default controls
+    //video.controls = false;
+
+    video.addEventListener("timeupdate", updateProgress, false);
+
+    function togglePlayPause() {
+        var playpause = document.getElementById("playpause");
+        if (video.paused || video.ended) {
+            playpause.title = "pause";
+            playpause.innerHTML = "pause";
+            video.play();
+        }
+        else {
+            playpause.title = "play";
+            playpause.innerHTML = "play";
+            video.pause();
+        }
+    }
+    function setVolume() {
+        var volume = document.getElementById("volume");
+        video.volume = volume.value;
+    }
+
+    function toggleMute() {
+        video.muted = !video.muted;
+    }
+
+    function updateProgress() {
+        var progress = document.getElementById("progress");
+        var value = 0;
+        if (video.currentTime > 0) {
+            value = Math.floor((100 / video.duration) * video.currentTime);
+        }
+        progress.style.width = value + "%";
+    }
+
+</script>

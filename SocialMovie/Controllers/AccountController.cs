@@ -1,19 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography;
 using SocialMovie.Models;
-using SocialMovie.Controllers;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-using System.Net.Http;
 using System.Net;
 using System.Net.Mail;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace SocialMovie.Controllers
@@ -83,7 +73,7 @@ namespace SocialMovie.Controllers
 
                 User user = UserValidation.CreateUser(username, password, email);
 
-                SendEmailTo(email, username, password, _emailSettings);
+                _emailSettings.SendEmailTo(email, username, password, _emailSettings);
 
                 _context.Users.Add(user);
                 _context.SaveChanges();
@@ -91,34 +81,6 @@ namespace SocialMovie.Controllers
                 return RedirectToAction("Login", "Account");
             }
             return View();
-        }
-
-        public void SendEmailTo(string emailAddress, string username, byte[] password, EmailSettings emailSettings)
-        {
-
-            MailMessage mailMessage = new MailMessage
-            {
-                From = new MailAddress(emailSettings.From),
-                Body = $"Voce recebeu este email pois se registrou em SocialMovie. Parabéns! Seu usuário está cadastrado com sucesso! Usuário: {username}, Senha: {Encoding.ASCII.GetString(password)}",
-                Subject = "Cadastro SocialMovie"
-            };
-            mailMessage.To.Add(emailAddress);
-
-
-            SmtpClient client = new SmtpClient(emailSettings.Server, emailSettings.Port)
-            {
-                UseDefaultCredentials = false,
-                EnableSsl = true,
-                Credentials = new NetworkCredential(emailSettings.Login, emailSettings.Password)
-            };
-
-            client.SendCompleted += (s, e) =>
-            {
-                client.Dispose();
-                mailMessage.Dispose();
-            };
-
-            client.SendAsync(mailMessage, null);
         }
 
         [HttpGet]
