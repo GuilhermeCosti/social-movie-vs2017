@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +11,17 @@ namespace SocialMovie.Models
 {
     public static class UserValidation
     {
+        public static ClaimsPrincipal UserPrincipal(string username)
+        {
+            var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, username)
+                };
+
+            var userIdentity = new ClaimsIdentity(claims, "login");
+
+            return new ClaimsPrincipal(userIdentity);
+        }
         public static User CreateUser(string username, byte[] password, string email)
         {
             byte[] salt = GetSalt();

@@ -16,9 +16,6 @@ using System.Net.Mail;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace SocialMovie.Controllers
 {
     public class AccountController : Controller
@@ -51,15 +48,8 @@ namespace SocialMovie.Controllers
 
             if(UserValidation.AuthenticUser(_context, username, password))
             {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, username)
-                };
-
-                var userIdentity = new ClaimsIdentity(claims, "login");
-
-                ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
-                await HttpContext.Authentication.SignInAsync("CookieAuthentication", principal);
+  
+                await HttpContext.Authentication.SignInAsync("CookieAuthentication", UserValidation.UserPrincipal(username));
 
                 return RedirectToAction("Index", "MainMenu");
             }
