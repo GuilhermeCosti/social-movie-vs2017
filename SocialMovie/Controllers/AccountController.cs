@@ -79,6 +79,7 @@ namespace SocialMovie.Controllers
         {
             string username = HttpContext.Request.Form["username"];
             byte[] password = Encoding.ASCII.GetBytes(HttpContext.Request.Form["password"]);
+            string email = HttpContext.Request.Form["email"];
 
             if(UserExists(_context, username))
             {
@@ -102,19 +103,19 @@ namespace SocialMovie.Controllers
 
                 var client = new SmtpClient("smtp.mail.com", 587);
                 client.UseDefaultCredentials = false;
-		client.EnableSsl = true;
+                client.EnableSsl = true;
                 client.Credentials = new NetworkCredential("socialmovie@mail.com", "joaopio123!@#JPP");
 
                 MailMessage mailMessage = new MailMessage();
                 mailMessage.From = new MailAddress("socialmovie@mail.com");
-                mailMessage.To.Add("joao-pio@hotmail.com");
-                mailMessage.Body = "boiola";
-                mailMessage.Subject = "Deu certo!";
+                mailMessage.To.Add(email);
+                mailMessage.Body = $"Voce recebeu este email pois se registrou em SocialMovie. Parabéns! Seu usuário está cadastrado com sucesso! Usuário: {username}, Senha: {password}";
+                mailMessage.Subject = "Cadastro SocialMovie";
                 client.Send(mailMessage);
 
 
-                //_context.Users.Add(user);
-                //_context.SaveChanges();
+                _context.Users.Add(user);
+                _context.SaveChanges();
 
                 return RedirectToAction("Login", "Account");
                 //ViewBag.Message = "Usuário inserido com sucesso!";
