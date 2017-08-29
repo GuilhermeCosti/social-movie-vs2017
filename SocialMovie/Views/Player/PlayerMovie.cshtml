@@ -22,9 +22,9 @@
                         <div id="controls">
                             <button id="playpause" title="play" onclick="togglePlayPause();">Play</button>
                         </div>
-                        <input id="volume" min="0" max="1" step="0.1" type="range" onchange="setVolume()"/>
+                        <input id="volume" min="0" max="1" step="0.1" type="range" onchange="setVolume()" />
                         <button id="mute" onclick="toggleMute()">Mute</button>
-                        <div id="progressBar"><span id="progress"></span></div>
+                        <div id="progressBar" min="0" max="100" value="0">0% played</div>
                     </div>
                     <div class="offset-sm-2"></div>
                 </div>
@@ -69,19 +69,33 @@
         </div>
         <br />
     </div>
-    <div class="row">
-        <div class="offset-1 col-10 offset-1">
-            @{  var reviews = (List<Review>)ViewData["reviews"];
-                foreach (var review in reviews)
-                {
-                    <h3>Title = @review.Title</h3>
-                    <h4>Body = @review.Body</h4>
-                    <p>User = @review.ReviewerId</p>
-                    <p>Rating = @review.Rating</p>
-                }
+
+    @{  var reviews = (List<Review>)ViewData["reviews"];
+        for (int i = 0; i < 4; i++)
+        {
+            foreach (var review in reviews)
+            {
+            <div class="row">
+                <div class="offset-1 col-10 offset-1">
+                    <div class="row rounded" style="background-color: #CCCCCC;">
+                        <div class="offset-sm-2"></div>
+                        <div class="col-sm-8 rounded" style="background-color: #AAAAAA;border:1px solid black;">
+                            <div class="row">
+                                <div class="col-8"><h3 style="position: absolute; left: 5%;">@review.Title</h3></div>
+                                <div class="col-4"><h3 style="position: absolute; right: 5%;"><strong>@review.Rating </strong></h3></div>
+                            </div>
+                            <br />
+                            <br />
+                            <p align="left"><strong>@review.ReviewerId: </strong> @review.Body</p>
+                        </div>
+                        <div class="offset-sm-2"></div>
+                    </div>
+                </div>
+
+            </div>
             }
-        </div>
-    </div>
+        }
+    }
     <br />
     <br />
     <br />
@@ -97,7 +111,7 @@
     // Turn off the default controls
     //video.controls = false;
 
-    video.addEventListener("timeupdate", updateProgress, false);
+    video.addEventListener("timeupdate", updateProgressBar, false);
 
     function togglePlayPause() {
         var playpause = document.getElementById("playpause");
@@ -121,13 +135,20 @@
         video.muted = !video.muted;
     }
 
-    function updateProgress() {
-        var progress = document.getElementById("progress");
-        var value = 0;
-        if (video.currentTime > 0) {
-            value = Math.floor((100 / video.duration) * video.currentTime);
-        }
-        progress.style.width = value + "%";
+    function updateProgressBar() {
+        var progressBar = document.getElementById('progressBar');
+        var percentage = Math.floor((100 / mediaPlayer.duration) * mediaPlayer.currentTime);
+        progressBar.value = percentage;
+        progressBar.innerHTML = percentage + '% played';
     }
+
+    //function updateProgress() {
+    //    var progress = document.getElementById("progress");
+    //    var value = 0;
+    //    if (video.currentTime > 0) {
+    //        value = Math.floor((100 / video.duration) * video.currentTime);
+    //    }
+    //    progress.style.width = value + "%";
+    //}
 
 </script>

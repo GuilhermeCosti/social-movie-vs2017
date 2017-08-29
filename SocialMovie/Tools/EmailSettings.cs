@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -23,14 +24,20 @@ namespace SocialMovie.Models
 
         public void SendEmailTo(string emailAddress, string username, byte[] password, EmailSettings emailSettings)
         {
+            string email = File.ReadAllText("Tools/email.html");
+            string pass = Encoding.ASCII.GetString(password);
+
+            email = email.Replace("{username}", username);
+            email = email.Replace("{password}", pass);
 
             MailMessage mailMessage = new MailMessage
             {
                 From = new MailAddress(emailSettings.From),
-                Body = $"Voce recebeu este email pois se registrou em SocialMovie. Parabéns! Seu usuário está cadastrado com sucesso! Usuário: {username}, Senha: {Encoding.ASCII.GetString(password)}",
+                Body = email,
                 Subject = "Cadastro SocialMovie"
             };
             mailMessage.To.Add(emailAddress);
+            mailMessage.IsBodyHtml = true;
 
 
             SmtpClient client = new SmtpClient(emailSettings.Server, emailSettings.Port)

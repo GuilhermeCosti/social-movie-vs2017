@@ -32,11 +32,6 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0"></DotNetCliToolReference> 
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="Tools\" />
-  </ItemGroup>
-
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>
