@@ -60,10 +60,12 @@ namespace SocialMovie
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            if(_env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if(_env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+
+            app.UseDeveloperExceptionPage();
 
             app.UseDefaultFiles();
             app.UseStaticFiles(new StaticFileOptions() {
