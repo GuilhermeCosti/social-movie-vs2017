@@ -5,6 +5,8 @@ using SocialMovie.Models;
 using System.Net;
 using System.Net.Mail;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace SocialMovie.Controllers
 {
@@ -39,7 +41,7 @@ namespace SocialMovie.Controllers
             if(UserValidation.AuthenticUser(_context, username, password))
             {
   
-                await HttpContext.Authentication.SignInAsync("CookieAuthentication", UserValidation.UserPrincipal(username));
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, UserValidation.UserPrincipal(username));
 
                 return RedirectToAction("Index", "MainMenu");
             }
@@ -53,7 +55,7 @@ namespace SocialMovie.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.Authentication.SignOutAsync("CookieAuthentication");
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Redirect("/Account/Login");
         }
 

@@ -12,7 +12,8 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.StaticFiles;
 using SocialMovie.Models;
 using Microsoft.Extensions.Configuration;
-using MySQL.Data.EntityFrameworkCore.Extensions;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 namespace SocialMovie
 {
@@ -27,8 +28,8 @@ namespace SocialMovie
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(_env.ContentRootPath)
-                .AddJsonFile("Configurations/database.json")
-                .AddJsonFile("Configurations/email.json")
+                //.AddJsonFile("Configurations/database.json")
+                //.AddJsonFile("Configurations/email.json")
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
@@ -53,7 +54,13 @@ namespace SocialMovie
             services.AddDbContext<SocialMovieContext>(options =>
             {
                 options.UseMySQL($"server=localhost;userid=root;pwd=joaopio1234;port=3306;database=socialmovie;sslmode=none;");
+                //options.UseMySql($"server=localhost;userid=root;pwd=joaopio1234;port=3306;database=socialmovie;sslmode=none;");
             });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
+
+
             services.AddMvc();
         }
 
@@ -86,14 +93,16 @@ namespace SocialMovie
             //});
 
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions()
-            {
-                AuthenticationScheme = "CookieAuthentication",
-                LoginPath = new PathString("/Account/Login/"),
-                AccessDeniedPath = new PathString("/Account/Forbidden/"),
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true
-            });
+            //app.UseCookieAuthentication(new CookieAuthenticationOptions
+            //{
+            //    AuthenticationScheme = "CookieAuthentication",
+            //    LoginPath = new PathString("/Account/Login/"),
+            //    AccessDeniedPath = new PathString("/Account/Forbidden/"),
+            //    AutomaticAuthenticate = true,
+            //    AutomaticChallenge = true
+            //});
+
+            app.UseAuthentication();
 
             app.UseMvcWithDefaultRoute();
         }
