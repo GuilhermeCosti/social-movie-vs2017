@@ -53,7 +53,7 @@ namespace SocialMovie
 
             services.AddDbContext<SocialMovieContext>(options =>
             {
-                options.UseMySQL($"server=localhost;userid=root;pwd=joaopio1234;port=3306;database=socialmovie;sslmode=none;");
+                options.UseMySQL($"server=172.18.0.2;userid=joao;pwd=joaopio1234;port=3306;database=socialmovie;sslmode=none;");
                 //options.UseMySql($"server=localhost;userid=root;pwd=joaopio1234;port=3306;database=socialmovie;sslmode=none;");
             });
 
