@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.IO;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.AspNetCore.StaticFiles;
 using SocialMovie.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace SocialMovie
 {
@@ -28,7 +21,7 @@ namespace SocialMovie
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(_env.ContentRootPath)
-                //.AddJsonFile("Configurations/database.json")
+                .AddJsonFile("Configurations/database.json")
                 //.AddJsonFile("Configurations/email.json")
                 .AddEnvironmentVariables();
 
@@ -41,20 +34,11 @@ namespace SocialMovie
             services.AddScoped<SocialMovieContext>();
             services.Configure<EmailSettings>(Configuration);
 
-            if (_env.IsDevelopment())
-            {
-                services.AddDirectoryBrowser();
-                var url = Configuration.GetValue<string>("localUrl");
-            }
-            else
-            {
-                var url = Configuration.GetValue<string>("releaseUrl");
-            }
+            var url = Configuration.GetValue<string>(_env.IsDevelopment() ? "localUrl" : "releaseURL");
 
             services.AddDbContext<SocialMovieContext>(options =>
             {
-                options.UseMySQL($"server=172.18.0.2;userid=joao;pwd=joaopio1234;port=3306;database=socialmovie;sslmode=none;");
-                //options.UseMySql($"server=localhost;userid=root;pwd=joaopio1234;port=3306;database=socialmovie;sslmode=none;");
+                options.UseMySQL($"server={url};userid=joao;pwd=joaopio1234;port=3306;database=socialmovie;sslmode=none;");
             });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -67,11 +51,6 @@ namespace SocialMovie
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            //if(_env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-
             app.UseDeveloperExceptionPage();
 
             app.UseDefaultFiles();
@@ -79,28 +58,10 @@ namespace SocialMovie
                 ServeUnknownFileTypes = true
             });
 
-            //app.UseFileServer(new FileServerOptions() {
-            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Movies")),
-            //    RequestPath = new PathString("/movies"),
-            //    EnableDirectoryBrowsing = true,
-            //});
-
-            //app.UseStaticFiles(new StaticFileOptions()
-            //{
-            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Movies")),
-            //    RequestPath = new PathString("/movies"),
-            //    ServeUnknownFileTypes = true
-            //});
-
-
-            //app.UseCookieAuthentication(new CookieAuthenticationOptions
-            //{
-            //    AuthenticationScheme = "CookieAuthentication",
-            //    LoginPath = new PathString("/Account/Login/"),
-            //    AccessDeniedPath = new PathString("/Account/Forbidden/"),
-            //    AutomaticAuthenticate = true,
-            //    AutomaticChallenge = true
-            //});
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseAuthentication();
 
