@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# exit emmediately if a command fails with a non zero exit code(set -e) and to print shell input lines as they are read (set -v)
+set -ev
+
 CONTAINER=$(docker ps -a --filter "name=socialmovie" -q);
 IMAGE=$(docker images socialmovie -q);
 NETWORK=$(docker network ls --filter "name=local-network" -q);
