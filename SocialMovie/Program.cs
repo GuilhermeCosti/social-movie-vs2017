@@ -18,6 +18,7 @@ namespace SocialMovie
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
+                .UseUrls("https://localhost:5000")
                 .Build();
 
             host.Run();
