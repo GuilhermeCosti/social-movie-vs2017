@@ -37,7 +37,7 @@ else
 fi
 
 echo "Running container..." 
-docker run -d --network=local-network -p 5000:80 --name socialmovie socialmovie
+docker run -d --network=local-network -p 5000:5000 --name socialmovie socialmovie
 
 if [ ! -z $RUNNING ]
 then
