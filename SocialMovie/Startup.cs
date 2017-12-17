@@ -24,6 +24,7 @@ namespace SocialMovie
             var builder = new ConfigurationBuilder()
                 .SetBasePath(_env.ContentRootPath)
                 .AddJsonFile("Configurations/database.json")
+                .AddJsonFile("Configurations/localhost.pfx")
                 //.AddJsonFile("Configurations/email.json")
                 .AddEnvironmentVariables();
 
@@ -49,8 +50,6 @@ namespace SocialMovie
 
             services.AddMvc();
 
-
-
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
         }
@@ -70,7 +69,6 @@ namespace SocialMovie
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-
 
             app.UseAuthentication();
 

@@ -20,7 +20,7 @@ namespace SocialMovie
                         options.AddServerHeader = false;
                         options.Listen(IPAddress.Loopback, 5000, listenOptions =>
                         {
-                            listenOptions.UseHttps("localhost.pfx", "joaopio1234");
+                            listenOptions.UseHttps("Configurations/localhost.pfx", "joaopio1234");
                         });
                     }
                 )
