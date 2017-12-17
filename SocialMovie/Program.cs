@@ -30,7 +30,7 @@ namespace SocialMovie
                     options =>
                     {
                         options.AddServerHeader = false;
-                        options.Listen(IPAddress.Loopback, 5000, listenOptions =>
+                        options.Listen(IPAddress.Any, 5000, listenOptions =>
                         {
                             listenOptions.UseHttps(certificate);
                         });
