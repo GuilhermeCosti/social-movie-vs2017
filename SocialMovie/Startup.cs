@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace SocialMovie
 {
@@ -32,6 +33,10 @@ namespace SocialMovie
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.Configure<MvcOptions>(options =>
+            //{
+            //    options.Filters.Add(new RequireHttpsAttribute());
+            //});
             services.AddScoped<SocialMovieContext>();
             services.Configure<EmailSettings>(Configuration);
 
@@ -42,15 +47,18 @@ namespace SocialMovie
                 options.UseMySQL($"server={url};userid=joao;pwd=joaopio1234;port=3306;database=socialmovie;sslmode=none;");
             });
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie();
-
             services.AddMvc();
+
+
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            //app.UseRewriter(new RewriteOptions().AddRedirectToHttps(301, 5000));
             app.UseDeveloperExceptionPage();
 
             app.UseDefaultFiles();
@@ -62,6 +70,7 @@ namespace SocialMovie
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
+
 
             app.UseAuthentication();
 

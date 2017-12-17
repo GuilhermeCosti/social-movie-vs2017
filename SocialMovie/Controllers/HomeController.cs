@@ -2386,6 +2386,7 @@ namespace SocialMovie.Controllers
             _context.SaveChanges();
 
         }
+    
         [Authorize]
         public IActionResult Index()
         {
