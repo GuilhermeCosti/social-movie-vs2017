@@ -3,5 +3,6 @@ SocialMovie/obj
 SocialMovie/out
 SocialMovie/config.json
 SocialMovie/Configurations
+SocialMovie/localhost.pfx
 .*
 !/.gitignore
