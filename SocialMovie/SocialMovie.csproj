@@ -33,6 +33,13 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0"></DotNetCliToolReference> 
   </ItemGroup>
 
+    <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+      <Copy SourceFiles="localhost.pfx" DestinationFolder="$(OutDir)" />
+    </Target>
+    <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
+      <Copy SourceFiles="localhost.pfx" DestinationFolder="$(PublishDir)" />
+    </Target>
+
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>

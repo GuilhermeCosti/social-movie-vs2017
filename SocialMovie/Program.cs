@@ -39,7 +39,7 @@ namespace SocialMovie
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
-                .UseUrls("https://localhost:5000")
+                .UseUrls("https://*:5000")
                 .Build();
 
             host.Run();
