@@ -5,7 +5,7 @@ set -ev
 
 CONTAINER=$(docker ps -a --filter "name=socialmovie" -q);
 IMAGE=$(docker images socialmovie -q);
-NETWORK=$(docker network ls --filter "name=local-network" -q);
+NETWORK=$(docker network ls --filter "name=localnetwork" -q);
 RUNNING=$(docker ps --filter "name=socialmovie" -q);
 
 if [ ! -z $CONTAINER ]
@@ -30,14 +30,14 @@ docker build -f Dockerfile -t socialmovie .
 if [ -z $NETWORK ]
 then
     echo "No network found..."
-    docker create network localnetwork
+    docker network create localnetwork
     echo "Network created."
 else
     echo "Network found"
 fi
 
 echo "Running container..." 
-docker run -d --network=local-network -p 5000:5000 --name socialmovie socialmovie
+docker run -d --network=localnetwork -p 5000:5000 --name socialmovie socialmovie
 
 if [ ! -z $RUNNING ]
 then

@@ -3,13 +3,13 @@
 cd /mnt
 
 echo "Creating database..."
-mysql -u root -p'joaopio1234' -e 'create database socialmovie;'
+mysql -u root -p"${MYSQL_PASS}" -e "create database socialmovie;"
 
 echo "Populating database..."
-mysql socialmovie < *.sql -u root -p'joaopio1234'
+mysql socialmovie < *.sql -u root -p"${MYSQL_PASS}"
 
 echo "Adding user to it..."
-mysql -u root -p"joaopio1234" -e "grant all privileges on *.* to 'joao'@'172.18.0.3' identified by 'joaopio1234'"
+mysql -u root -p"${MYSQL_PASS}" -e "grant all privileges on *.* to 'joao'@'%' identified by '${MYSQL_PASS}'"
 
 echo "Exiting container..."
 exit
